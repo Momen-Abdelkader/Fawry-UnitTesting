@@ -7,7 +7,7 @@ public class StopWatchTest {
     @Test
     void shouldRecordMinutes() {
         StopWatch stopWatch = new StopWatch();
-        stopWatch.record(10);
+        stopWatch.recordMinutes(10);
         assertThat(stopWatch.getMinutes()).isEqualTo(10);
     }
 }
