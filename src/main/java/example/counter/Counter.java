@@ -1,13 +1,13 @@
 package example.counter;
 
 public class Counter {
-    int value = 0;
+    private int count = 0;
 
-    public int getValue() {
-        return value;
+    public int getCount() {
+        return count;
     }
 
-    public void add(int value) {
-        this.value += value;
+    public void addToCount(int valueToCount) {
+        count += valueToCount;
     }
 }

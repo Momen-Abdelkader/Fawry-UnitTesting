@@ -1,21 +1,27 @@
 package example.counter;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CounterTest {
 
-    @Test
-    void shouldStartAtZero() {
-        Counter counter = new Counter();
-        assertThat(counter.getValue()).isEqualTo(0);
+    private Counter counterUnderTest;
+
+    @BeforeEach
+    void setUp() {
+        counterUnderTest = new Counter();
     }
 
     @Test
-    void shouldAccumulateValues() {
-        Counter counter = new Counter();
-        counter.add(5);
-        counter.add(3);
-        assertThat(counter.getValue()).isEqualTo(8);
+    void shouldStartAtZero() {
+        assertThat(counterUnderTest.getCount()).isEqualTo(0);
+    }
+
+    @Test
+    void shouldAddToCount() {
+        counterUnderTest.addToCount(5);
+        counterUnderTest.addToCount(3);
+        assertThat(counterUnderTest.getCount()).isEqualTo(8);
     }
 }
