@@ -24,7 +24,7 @@ public class StopWatch {
         }
     }
 
-    public void setWorkingDays(boolean workHours) {
+    public void setWorkingHours(boolean workHours) {
         this.workHours = workHours;
         dayHours = workHours ? 8 : 24;
     }
