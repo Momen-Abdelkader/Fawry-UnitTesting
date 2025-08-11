@@ -1,20 +1,27 @@
 package example.stopwatch;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class StopWatchTest {
+
+    private StopWatch stopWatchUnderTest;
+
+    @BeforeEach
+    void setUp() {
+        stopWatchUnderTest = new StopWatch();
+    }
+
     @Test
     void shouldRecordMinutes() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.recordMinutes(10);
-        assertThat(stopWatch.getMinutes()).isEqualTo(10);
+        stopWatchUnderTest.recordMinutes(10);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
     }
 
     @Test
     void shouldIgnoreNegativeInput() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.recordMinutes(-10);
-        assertThat(stopWatch.getMinutes()).isEqualTo(0);
+        stopWatchUnderTest.recordMinutes(-10);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(0);
     }
 }
