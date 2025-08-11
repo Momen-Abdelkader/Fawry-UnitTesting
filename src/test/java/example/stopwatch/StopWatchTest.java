@@ -10,4 +10,11 @@ public class StopWatchTest {
         stopWatch.recordMinutes(10);
         assertThat(stopWatch.getMinutes()).isEqualTo(10);
     }
+
+    @Test
+    void shouldIgnoreNegativeInput() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.recordMinutes(-10);
+        assertThat(stopWatch.getMinutes()).isEqualTo(0);
+    }
 }
