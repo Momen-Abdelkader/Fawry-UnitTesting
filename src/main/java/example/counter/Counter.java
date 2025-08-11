@@ -1,6 +1,7 @@
 package example.counter;
 
 public class Counter {
+    private final int LIMIT = 10;
     private int count = 0;
 
     public int getCount() {
@@ -8,6 +9,6 @@ public class Counter {
     }
 
     public void addToCount(int valueToCount) {
-        count += valueToCount;
+        count += (valueToCount) % 10;
     }
 }
