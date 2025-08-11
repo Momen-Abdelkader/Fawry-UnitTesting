@@ -39,4 +39,13 @@ public class StopWatchTest {
         assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
         assertThat(stopWatchUnderTest.getDays()).isEqualTo(2);
     }
+
+    @Test
+    void shouldBeAbleToRecordDaysBasedOnWorkDays() {
+        stopWatchUnderTest.setWorkingDays(true);
+        stopWatchUnderTest.recordMinutes(3010);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
+        assertThat(stopWatchUnderTest.getDays()).isEqualTo(6);
+    }
 }
