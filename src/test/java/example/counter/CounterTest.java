@@ -24,4 +24,10 @@ public class CounterTest {
         counterUnderTest.addToCount(3);
         assertThat(counterUnderTest.getCount()).isEqualTo(8);
     }
+
+    @Test
+    void shouldWrapToZeroAfterLimit() {
+        counterUnderTest.addToCount(12);
+        assertThat(counterUnderTest.getCount()).isEqualTo(2);
+    }
 }
