@@ -48,4 +48,18 @@ public class StopWatchTest {
         assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
         assertThat(stopWatchUnderTest.getDays()).isEqualTo(6);
     }
+
+    @Test
+    void shouldConvertExistingDaysAccordingToDailyHours() {
+        stopWatchUnderTest.recordMinutes(3010); // recorded based on 24-hour days
+        stopWatchUnderTest.setWorkingHours(true);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
+        assertThat(stopWatchUnderTest.getDays()).isEqualTo(6);
+
+        stopWatchUnderTest.setWorkingHours(false);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
+        assertThat(stopWatchUnderTest.getDays()).isEqualTo(2);
+    }
 }
