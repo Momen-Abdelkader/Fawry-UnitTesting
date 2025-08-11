@@ -2,27 +2,72 @@ package example.store;
 
 import example.account.AccountManager;
 import example.account.Customer;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 public class StoreTest {
 
-    @Test
-    void test() {
-        // Arrange
-        AccountManager accountManager = mock(AccountManager.class);
-        when(accountManager.withdraw(any(), anyInt())).thenReturn("success");
-        Store store = new StoreImpl(accountManager);
-        Product product = new Product();
-        product.setQuantity(4);
-        Customer customer = new Customer();
+    private AccountManager accountManager;
+    private Store storeUnderTest;
+    private Customer customer;
+    private Product product;
 
-        // Act
-        store.buy(product, customer);
-
-        // Assert
-        Assertions.assertEquals(3, product.getQuantity());
+    @BeforeEach
+    void setUp() {
+        accountManager = mock(AccountManager.class);
+        storeUnderTest = new StoreImpl(accountManager);
+        customer = new Customer();
+        product = new Product();
     }
 
+    @Test
+    void givenSufficientProductQuantity_whenBuyProduct_thenSucceed() {
+        // Arrange
+        when(accountManager.withdraw(any(), anyInt())).thenReturn("success");
+        int initialQuantity = 4;
+        product.setQuantity(initialQuantity);
+
+        // Act
+        storeUnderTest.buy(product, customer);
+
+        // Assert
+        verify(accountManager).withdraw(customer, product.getPrice());
+        assertThat(product.getQuantity()).isEqualTo(initialQuantity - 1);
+    }
+
+    @Test
+    void givenInsufficientProductQuantity_whenBuyProduct_thenThrowException() {
+        // Arrange
+        when(accountManager.withdraw(any(), anyInt())).thenReturn("success");
+        int initialQuantity = 0;
+        product.setQuantity(initialQuantity);
+
+        // Act
+        Throwable thrown = catchThrowable(() -> storeUnderTest.buy(product, customer));
+
+        // Assert
+        assertThat(thrown).isInstanceOf(RuntimeException.class).hasMessage("Product out of stock");
+        verify(accountManager, never()).withdraw(any(), anyInt());
+        assertThat(product.getQuantity()).isEqualTo(initialQuantity);
+    }
+
+    @Test
+    void givenFailedWithdraw_whenBuyProduct_thenThrowException() {
+        // Arrange
+        when(accountManager.withdraw(any(), anyInt())).thenReturn("fail");
+        int initialQuantity = 5;
+        product.setQuantity(initialQuantity);
+
+        // Act
+        Throwable thrown = catchThrowable(() -> storeUnderTest.buy(product, customer));
+
+        // Assert
+        verify(accountManager).withdraw(customer, product.getPrice());
+        assertThat(thrown).isInstanceOf(RuntimeException.class).hasMessage("Payment failure: fail");
+        assertThat(product.getQuantity()).isEqualTo(initialQuantity);
+    }
 }
