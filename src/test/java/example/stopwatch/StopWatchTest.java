@@ -24,4 +24,11 @@ public class StopWatchTest {
         stopWatchUnderTest.recordMinutes(-10);
         assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(0);
     }
+
+    @Test
+    void shouldRecordHours() {
+        stopWatchUnderTest.recordMinutes(70);
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(1);
+    }
 }
