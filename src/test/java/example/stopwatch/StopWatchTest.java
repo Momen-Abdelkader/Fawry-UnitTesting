@@ -13,53 +13,55 @@ public class StopWatchTest {
         stopWatchUnderTest = new StopWatch();
     }
 
+    void assertTime(int expectedMinutes, int expectedHours, int expectedDays) {
+        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(expectedMinutes);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(expectedHours);
+        assertThat(stopWatchUnderTest.getDays()).isEqualTo(expectedDays);
+    }
+
     @Test
     void shouldRecordMinutes() {
         stopWatchUnderTest.recordMinutes(10);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
+        assertTime(10, 0, 0);
     }
 
     @Test
     void shouldIgnoreNegativeInput() {
         stopWatchUnderTest.recordMinutes(-10);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(0);
+        assertTime(0, 0, 0);
     }
 
     @Test
     void shouldRecordHoursWhenMinutesExceed60() {
         stopWatchUnderTest.recordMinutes(130);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
+        assertTime(10, 2, 0);
     }
 
     @Test
     void shouldRecordDaysWhenHoursExceed24() {
         stopWatchUnderTest.recordMinutes(3010);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
-        assertThat(stopWatchUnderTest.getDays()).isEqualTo(2);
+        assertTime(10, 2, 2);
     }
 
     @Test
     void shouldBeAbleToRecordDaysBasedOnWorkHours() {
         stopWatchUnderTest.setWorkingHours(true);
         stopWatchUnderTest.recordMinutes(3010);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
-        assertThat(stopWatchUnderTest.getDays()).isEqualTo(6);
+        assertTime(10, 2, 6);
     }
 
     @Test
-    void shouldConvertExistingDaysAccordingToDailyHours() {
-        stopWatchUnderTest.recordMinutes(3010); // recorded based on 24-hour days
+    void shouldConvertFullDaysToWorkingDays() {
+        stopWatchUnderTest.recordMinutes(3010);
         stopWatchUnderTest.setWorkingHours(true);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
-        assertThat(stopWatchUnderTest.getDays()).isEqualTo(6);
+        assertTime(10, 2, 6);
+    }
 
+    @Test
+    void shouldConvertWorkingDaysToFullDays() {
+        stopWatchUnderTest.setWorkingHours(true);
+        stopWatchUnderTest.recordMinutes(3010);
         stopWatchUnderTest.setWorkingHours(false);
-        assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
-        assertThat(stopWatchUnderTest.getDays()).isEqualTo(2);
+        assertTime(10, 2, 2);
     }
 }
