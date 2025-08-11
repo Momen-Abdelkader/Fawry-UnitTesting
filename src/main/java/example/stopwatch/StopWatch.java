@@ -25,8 +25,22 @@ public class StopWatch {
     }
 
     public void setWorkingHours(boolean workHours) {
+        if (this.workHours == workHours) {
+            return;
+        }
+
         this.workHours = workHours;
-        dayHours = workHours ? 8 : 24;
+        if (workHours) {
+            minutes += (days * 24 + hours) * 60;
+            dayHours = 8;
+        }
+        else {
+            minutes += (days * 8 + hours) * 60;
+            dayHours = 24;
+        }
+
+        calculateHours();
+        calculateDays();
     }
 
     public int getMinutes() {
@@ -39,5 +53,19 @@ public class StopWatch {
 
     public int getDays() {
         return days;
+    }
+
+    private void calculateHours() {
+        if (minutes > 60) {
+            hours = minutes / 60;
+            minutes -= 60 * hours;
+        }
+    }
+
+    private void calculateDays() {
+        if (hours > dayHours) {
+            days = hours / dayHours;
+            hours -= dayHours * days;
+        }
     }
 }
