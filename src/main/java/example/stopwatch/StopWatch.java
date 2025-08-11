@@ -2,16 +2,25 @@ package example.stopwatch;
 
 public class StopWatch {
     private int minutes = 0;
+    private int hours = 0;
 
-    public void recordMinutes(int minutes) {
-        if (minutes < 0) {
+    public void recordMinutes(int minutesToRecord) {
+        if (minutesToRecord < 0) {
             return;
         }
 
-        this.minutes += minutes;
+        minutes += minutesToRecord;
+        if (minutes > 60) {
+            hours = minutes / 60;
+            minutes -= 60 * hours;
+        }
     }
 
     public int getMinutes() {
         return minutes;
+    }
+
+    public int getHours() {
+        return hours;
     }
 }

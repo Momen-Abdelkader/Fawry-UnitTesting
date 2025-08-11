@@ -26,9 +26,9 @@ public class StopWatchTest {
     }
 
     @Test
-    void shouldRecordHours() {
-        stopWatchUnderTest.recordMinutes(70);
+    void shouldRecordHoursWhenMinutesExceed60() {
+        stopWatchUnderTest.recordMinutes(130);
         assertThat(stopWatchUnderTest.getMinutes()).isEqualTo(10);
-        assertThat(stopWatchUnderTest.getHours()).isEqualTo(1);
+        assertThat(stopWatchUnderTest.getHours()).isEqualTo(2);
     }
 }
